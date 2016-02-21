@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+// gurvinderkaurbrar//
 package model;
 
 import javax.faces.bean.ApplicationScoped;
@@ -23,12 +25,15 @@ import javax.faces.bean.ApplicationScoped;
  */
 @ApplicationScoped
 public class Account {
+    double balance;
+//    double deposit;
+   // double withdraw;
     /**
      * Returns the current total balance of the account
      * @return - the balance
      */
     public double getBalance() {
-        return -999;
+        return balance;
     }
     
     /**
@@ -36,7 +41,7 @@ public class Account {
      * @param cash - the cash to deposit
      */
     public void deposit(double cash) {
-        
+        balance = balance + cash;
     }
     
     /**
@@ -44,13 +49,13 @@ public class Account {
      * @param cash - the cash to withdraw
      */
     public void withdraw(double cash) {
-    
+       balance = balance - cash;
     }
     
     /**
      * Deducts all cash from the total balance of the account
      */
     public void close() {
-        
+        balance= 0; 
     }
 }
