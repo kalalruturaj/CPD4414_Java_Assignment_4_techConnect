@@ -13,16 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// Class Modified by Ruturaj Kalal.
 
 package servlet;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.Account;
 
 /**
  * Provides an Account Balance and Basic Withdrawal/Deposit Operations
  */
 @WebServlet("/account")
 public class AccountServlet extends HttpServlet {
+    Account instance = new Account();
     
+    public void doGet(HttpServletRequest request , HttpServletResponse response){
+        
+         try {
+            PrintWriter out = response.getWriter();
+             response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
+         response.setHeader("Pragma", "no-cache");
+         response.setDateHeader("Expires", 0);
+         out.println(instance.getBalance()); 
+         }
+         catch(IOException ex){
+             response.setStatus(500);
+             
+         }
+        
+    }
+    public void doPost(HttpServletRequest request, HttpServletResponse response){
+        response.setContentType("text/html");
+        String deposit = (request.getParameter("deposit"));
+        String withdraw =(request.getParameter("withdraw"));
+        String close = (request.getParameter("close"));
+        
+        try {
+            PrintWriter out = response.getWriter();
+             
+        if(deposit!=null){
+            double bal = Double.parseDouble(deposit);
+            instance.deposit(bal);
+            out.println(instance.getBalance());
+        }
+        if(withdraw!=null){
+            double bal = Double.parseDouble(withdraw);
+            instance.withdraw(bal);
+            out.println(instance.getBalance());
+        }
+        if(Boolean.parseBoolean(close)){
+            instance.close();
+            
+            out.println(instance.getBalance());
+        }
+        } catch (IOException ex) {
+            System.out.println(""+ex);
+        }       
+    }
 }
